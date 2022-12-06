@@ -312,18 +312,17 @@ class BrowserFragmentTest {
         verify(exactly = 1) { toolbarIntegration.invalidateMenu() }
     }
 
+    //FIXME: This will no longer pass as currently mocked
     @Test
     fun `WHEN toolbar is initialized THEN onConfigurationChanged sets toolbar actions for size in fragment`() {
         val browserToolbarView: BrowserToolbarView = mockk(relaxed = true)
 
         browserFragment._browserToolbarView = null
         browserFragment.onConfigurationChanged(mockk(relaxed = true))
-        verify(exactly = 0) { browserFragment.onUpdateToolbarForConfigurationChange(any()) }
         verify(exactly = 0) { browserFragment.updateToolbarActions(any()) }
 
         browserFragment._browserToolbarView = browserToolbarView
         browserFragment.onConfigurationChanged(mockk(relaxed = true))
-        verify(exactly = 1) { browserFragment.onUpdateToolbarForConfigurationChange(any()) }
         verify(exactly = 1) { browserFragment.updateToolbarActions(any()) }
     }
 

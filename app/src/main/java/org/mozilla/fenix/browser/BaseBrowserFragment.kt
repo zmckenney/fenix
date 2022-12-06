@@ -204,7 +204,7 @@ abstract class BaseBrowserFragment :
 
     var customTabSessionId: String? = null
 
-    @VisibleForTesting
+    @VisibleForTesting(VisibleForTesting.PROTECTED)
     internal var browserInitialized: Boolean = false
     private var initUIJob: Job? = null
     protected var webAppToolbarShouldBeVisible = true
@@ -1399,11 +1399,6 @@ abstract class BaseBrowserFragment :
         binding.swipeRefresh.isEnabled = shouldPullToRefreshBeEnabled(inFullScreen)
     }
 
-    @CallSuper
-    internal open fun onUpdateToolbarForConfigurationChange(toolbar: BrowserToolbarView) {
-        toolbar.dismissMenu()
-    }
-
     /*
      * Dereference these views when the fragment view is destroyed to prevent memory leaks
      */
@@ -1476,9 +1471,7 @@ abstract class BaseBrowserFragment :
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
-        _browserToolbarView?.let {
-            onUpdateToolbarForConfigurationChange(it)
-        }
+        _browserToolbarView?.dismissMenu()
     }
 
     // This method is called in response to native web extension messages from

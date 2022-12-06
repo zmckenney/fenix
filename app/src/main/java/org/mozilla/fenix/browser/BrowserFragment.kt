@@ -5,6 +5,7 @@
 package org.mozilla.fenix.browser
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.StrictMode
 import android.view.View
 import android.view.ViewGroup
@@ -168,12 +169,6 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
                 view = view,
             )
         }
-    }
-
-    override fun onUpdateToolbarForConfigurationChange(toolbar: BrowserToolbarView) {
-        super.onUpdateToolbarForConfigurationChange(toolbar)
-
-        updateToolbarActions(isTablet = resources.getBoolean(R.bool.tablet))
     }
 
     @VisibleForTesting
@@ -457,5 +452,13 @@ class BrowserFragment : BaseBrowserFragment(), UserInteractionHandler {
     @VisibleForTesting
     internal fun updateLastBrowseActivity() {
         requireContext().settings().lastBrowseActivity = System.currentTimeMillis()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        if (browserInitialized) {
+            updateToolbarActions(isTablet = resources.getBoolean(R.bool.tablet))
+        }
     }
 }
